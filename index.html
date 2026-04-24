@@ -4,396 +4,320 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Don't Text — Tu ancla emocional</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #09090f;
-      --surface: #12121e;
-      --surface2: #1a1a2e;
-      --accent: #a78bfa;
-      --accent-dim: #6d4fc7;
-      --accent-glow: rgba(167,139,250,0.15);
-      --text: #e2e0f0;
-      --text-dim: #7c7a96;
-      --bubble-ai: #16153a;
-      --bubble-user: #2d1f5e;
-      --border: rgba(167,139,250,0.12);
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#09090f;--surface:#12121e;--surface2:#1a1a2e;
+      --accent:#a78bfa;--accent-dim:#6d4fc7;--accent-glow:rgba(167,139,250,0.15);
+      --text:#e2e0f0;--text-dim:#7c7a96;
+      --bubble-ai:#16153a;--bubble-user:#2d1f5e;
+      --border:rgba(167,139,250,0.14);
     }
-    html, body { height: 100%; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow: hidden; }
-
-    .bg-orb { position: fixed; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(109,79,199,0.18) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%,-50%); z-index: 0; animation: orbPulse 6s ease-in-out infinite; }
-    @keyframes orbPulse { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.7} 50%{transform:translate(-50%,-50%) scale(1.15);opacity:1} }
-    .bg-stars { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
-    .star { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--d,3s) ease-in-out infinite var(--delay,0s); opacity: 0; }
-    @keyframes twinkle { 0%,100%{opacity:0;transform:scale(0.8)} 50%{opacity:var(--op,0.6);transform:scale(1.1)} }
-
-    .screen { display: none; position: fixed; inset: 0; z-index: 10; }
-    .screen.active { display: flex; }
-
-    /* INTRO */
-    #screen-intro { flex-direction: column; align-items: center; justify-content: center; padding: 2rem; text-align: center; }
-    .intro-badge { display: inline-block; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--border); padding: 4px 14px; border-radius: 99px; margin-bottom: 1.5rem; background: var(--accent-glow); animation: fadeUp 0.7s ease both; }
-    .intro-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem,10vw,5.5rem); font-weight: 400; line-height: 1.05; margin-bottom: 0.5rem; animation: fadeUp 0.7s ease 0.1s both; }
-    .intro-title em { font-style: italic; color: var(--accent); }
-    .intro-sub { font-size: 1rem; color: var(--text-dim); font-weight: 300; max-width: 340px; line-height: 1.7; margin-bottom: 2.5rem; animation: fadeUp 0.7s ease 0.2s both; }
-    .btn-main { display: inline-flex; align-items: center; gap: 0.75rem; background: linear-gradient(135deg,#7c3aed,#a78bfa); color: white; border: none; padding: 1.1rem 2.5rem; border-radius: 99px; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 500; cursor: pointer; box-shadow: 0 0 40px rgba(124,58,237,0.4); transition: transform 0.2s, box-shadow 0.2s; animation: fadeUp 0.7s ease 0.3s both; }
-    .btn-main:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 0 60px rgba(124,58,237,0.6); }
-    .intro-footer { position: absolute; bottom: 2rem; font-size: 0.72rem; color: var(--text-dim); letter-spacing: 0.05em; animation: fadeUp 0.7s ease 0.5s both; }
-
-    /* ONBOARDING */
-    #screen-onboarding { flex-direction: column; align-items: center; justify-content: center; padding: 2rem; }
-    .ob-wrap { width: 100%; max-width: 480px; }
-    .ob-progress { display: flex; gap: 6px; margin-bottom: 2rem; }
-    .ob-dot { flex: 1; height: 3px; border-radius: 99px; background: var(--border); transition: background 0.3s; }
-    .ob-dot.done { background: var(--accent); }
-    .ob-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
-    .ob-question { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--text); line-height: 1.3; margin-bottom: 0.5rem; }
-    .ob-sub { font-size: 0.85rem; color: var(--text-dim); line-height: 1.65; margin-bottom: 1.5rem; }
-    .ob-options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
-    .ob-option { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: var(--text); cursor: pointer; text-align: left; transition: border-color 0.15s, background 0.15s; }
-    .ob-option:hover, .ob-option.selected { border-color: rgba(167,139,250,0.5); background: rgba(167,139,250,0.08); }
-    .ob-input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px 16px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: var(--text); outline: none; transition: border-color 0.2s; }
-    .ob-input:focus { border-color: rgba(167,139,250,0.4); }
-    .ob-input::placeholder { color: var(--text-dim); }
-    .btn-next { background: linear-gradient(135deg,#7c3aed,#a78bfa); color: white; border: none; padding: 11px 28px; border-radius: 99px; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500; cursor: pointer; margin-top: 0.75rem; transition: opacity 0.2s; }
-    .btn-next:disabled { opacity: 0.35; cursor: not-allowed; }
-    .btn-next:not(:disabled):hover { opacity: 0.85; }
-
-    /* CHAT */
-    #screen-chat { flex-direction: column; }
-    .chat-header { display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border); background: rgba(9,9,15,0.85); backdrop-filter: blur(20px); flex-shrink: 0; }
-    .chat-header-left { display: flex; align-items: center; gap: 10px; }
-    .ch-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg,#4c1d95,#7c3aed); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; box-shadow: 0 0 15px rgba(124,58,237,0.4); }
-    .ch-name { font-family: 'Playfair Display', serif; font-size: 1rem; }
-    .ch-status { font-size: 0.7rem; color: var(--accent); display: flex; align-items: center; gap: 5px; }
-    .ch-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
-    .btn-back { background: none; border: 1px solid var(--border); color: var(--text-dim); padding: 5px 14px; border-radius: 99px; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; cursor: pointer; transition: all 0.2s; }
-    .btn-back:hover { border-color: var(--accent); color: var(--accent); }
-
-    .chat-msgs { flex: 1; overflow-y: auto; padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 12px; scroll-behavior: smooth; }
-    .chat-msgs::-webkit-scrollbar { width: 3px; }
-    .chat-msgs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
-
-    .msg { display: flex; gap: 8px; max-width: 86%; animation: msgIn 0.35s ease both; }
-    @keyframes msgIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-    .msg.user { align-self: flex-end; flex-direction: row-reverse; }
-    .msg.ai { align-self: flex-start; }
-    .msg-av { width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; margin-top: 2px; }
-    .msg.ai .msg-av { background: linear-gradient(135deg,#4c1d95,#7c3aed); box-shadow: 0 0 10px rgba(124,58,237,0.3); }
-    .msg.user .msg-av { background: var(--surface2); border: 1px solid var(--border); }
-    .msg-bubble { padding: 10px 14px; border-radius: 16px; font-size: 0.875rem; line-height: 1.65; white-space: pre-wrap; font-weight: 300; }
-    .msg.ai .msg-bubble { background: var(--bubble-ai); border: 1px solid var(--border); border-bottom-left-radius: 4px; }
-    .msg.user .msg-bubble { background: var(--bubble-user); border: 1px solid rgba(167,139,250,0.2); border-bottom-right-radius: 4px; }
-
-    .typing { display: flex; gap: 8px; align-self: flex-start; animation: msgIn 0.3s ease both; }
-    .typing-dots { background: var(--bubble-ai); border: 1px solid var(--border); border-radius: 16px; border-bottom-left-radius: 4px; padding: 12px 14px; display: flex; gap: 5px; align-items: center; }
-    .typing-dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-dim); animation: dotBounce 1.2s ease-in-out infinite; }
-    .typing-dots span:nth-child(2){animation-delay:0.2s} .typing-dots span:nth-child(3){animation-delay:0.4s}
-    @keyframes dotBounce { 0%,60%,100%{transform:translateY(0);opacity:0.4} 30%{transform:translateY(-4px);opacity:1} }
-
-    .chat-input-area { padding: 0.75rem 1.5rem 1.25rem; border-top: 1px solid var(--border); background: rgba(9,9,15,0.85); backdrop-filter: blur(20px); flex-shrink: 0; }
-    .input-wrap { display: flex; gap: 8px; align-items: flex-end; background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 0.5rem 0.5rem 0.5rem 1rem; transition: border-color 0.2s; }
-    .input-wrap:focus-within { border-color: rgba(167,139,250,0.35); }
-    #chat-input { flex: 1; background: none; border: none; outline: none; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 300; resize: none; max-height: 110px; line-height: 1.5; padding: 0.3rem 0; }
-    #chat-input::placeholder { color: var(--text-dim); }
-    .btn-send { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg,#7c3aed,#a78bfa); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: transform 0.15s, box-shadow 0.15s; box-shadow: 0 0 15px rgba(124,58,237,0.3); }
-    .btn-send:hover { transform: scale(1.08); }
-    .btn-send:active { transform: scale(0.95); }
-    .btn-send:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-    .btn-send svg { width: 14px; height: 14px; fill: white; }
-    .input-hint { font-size: 0.68rem; color: var(--text-dim); text-align: center; margin-top: 0.5rem; letter-spacing: 0.02em; }
-
-    @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
-    @media(max-width:480px) { .chat-msgs{padding:1rem} .chat-input-area{padding:0.75rem 1rem 1rem} .msg{max-width:92%} }
+    html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;}
+    .bg-orb{position:fixed;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(109,79,199,0.18) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);z-index:0;animation:orb 6s ease-in-out infinite;}
+    @keyframes orb{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.7}50%{transform:translate(-50%,-50%) scale(1.15);opacity:1}}
+    .bg-stars{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
+    .star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d,3s) ease-in-out infinite var(--delay,0s);opacity:0;}
+    @keyframes twinkle{0%,100%{opacity:0}50%{opacity:var(--op,.5)}}
+    .screen{display:none;position:fixed;inset:0;z-index:10;flex-direction:column;}
+    .screen.active{display:flex;}
+    #s-intro{align-items:center;justify-content:center;text-align:center;padding:2rem;}
+    .badge{display:inline-block;font-size:.7rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);border:1px solid var(--border);padding:4px 14px;border-radius:99px;margin-bottom:1.5rem;background:var(--accent-glow);}
+    .title{font-family:'Playfair Display',serif;font-size:clamp(3rem,12vw,5.5rem);font-weight:400;line-height:1.05;margin-bottom:.5rem;}
+    .title em{font-style:italic;color:var(--accent);}
+    .subtitle{font-size:1rem;color:var(--text-dim);font-weight:300;max-width:320px;line-height:1.7;margin-bottom:2.5rem;}
+    .btn-main{display:inline-flex;align-items:center;gap:.75rem;background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;border:none;padding:1.1rem 2.5rem;border-radius:99px;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:500;cursor:pointer;box-shadow:0 0 40px rgba(124,58,237,.4);}
+    .intro-note{position:absolute;bottom:2rem;font-size:.72rem;color:var(--text-dim);}
+    #s-ob{align-items:center;justify-content:center;padding:2rem;}
+    .ob-wrap{width:100%;max-width:460px;}
+    .ob-progress{display:flex;gap:6px;margin-bottom:2rem;}
+    .ob-dot{flex:1;height:3px;border-radius:99px;background:var(--border);transition:background .3s;}
+    .ob-dot.done{background:var(--accent);}
+    .ob-label{font-size:.7rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem;}
+    .ob-q{font-family:'Playfair Display',serif;font-size:1.6rem;line-height:1.3;margin-bottom:.5rem;}
+    .ob-sub{font-size:.85rem;color:var(--text-dim);line-height:1.65;margin-bottom:1.5rem;}
+    .ob-options{display:flex;flex-direction:column;gap:8px;margin-bottom:1rem;}
+    .ob-opt{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 16px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);cursor:pointer;text-align:left;transition:border-color .15s,background .15s;}
+    .ob-opt:hover,.ob-opt.sel{border-color:rgba(167,139,250,.5);background:rgba(167,139,250,.08);}
+    .ob-text-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 16px;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);outline:none;transition:border-color .2s;margin-bottom:1rem;}
+    .ob-text-input:focus{border-color:rgba(167,139,250,.4);}
+    .ob-text-input::placeholder{color:var(--text-dim);}
+    .btn-next{background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;border:none;padding:11px 28px;border-radius:99px;font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;cursor:pointer;}
+    .btn-next:disabled{opacity:.35;cursor:not-allowed;}
+    #s-chat{overflow:hidden;}
+    .chat-head{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid var(--border);background:rgba(9,9,15,.9);backdrop-filter:blur(20px);flex-shrink:0;}
+    .ch-left{display:flex;align-items:center;gap:10px;}
+    .ch-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#4c1d95,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:.85rem;}
+    .ch-name{font-family:'Playfair Display',serif;font-size:1rem;}
+    .ch-status{font-size:.7rem;color:var(--accent);display:flex;align-items:center;gap:5px;}
+    .ch-dot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite;}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+    .btn-back{background:none;border:1px solid var(--border);color:var(--text-dim);padding:5px 14px;border-radius:99px;font-family:'DM Sans',sans-serif;font-size:.75rem;cursor:pointer;}
+    .chat-msgs{flex:1;overflow-y:auto;padding:1.25rem;display:flex;flex-direction:column;gap:12px;}
+    .chat-msgs::-webkit-scrollbar{width:3px;}
+    .chat-msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px;}
+    .msg{display:flex;gap:8px;max-width:86%;animation:msgIn .35s ease both;}
+    @keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    .msg.user{align-self:flex-end;flex-direction:row-reverse;}
+    .msg.ai{align-self:flex-start;}
+    .msg-av{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.8rem;margin-top:2px;}
+    .msg.ai .msg-av{background:linear-gradient(135deg,#4c1d95,#7c3aed);}
+    .msg.user .msg-av{background:var(--surface2);border:1px solid var(--border);}
+    .msg-bubble{padding:10px 14px;border-radius:16px;font-size:.875rem;line-height:1.65;white-space:pre-wrap;font-weight:300;}
+    .msg.ai .msg-bubble{background:var(--bubble-ai);border:1px solid var(--border);border-bottom-left-radius:4px;}
+    .msg.user .msg-bubble{background:var(--bubble-user);border:1px solid rgba(167,139,250,.2);border-bottom-right-radius:4px;}
+    .typing{display:flex;gap:8px;align-self:flex-start;}
+    .t-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#4c1d95,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;margin-top:2px;}
+    .t-dots{background:var(--bubble-ai);border:1px solid var(--border);border-radius:16px;border-bottom-left-radius:4px;padding:12px 14px;display:flex;gap:5px;align-items:center;}
+    .t-dots span{width:6px;height:6px;border-radius:50%;background:var(--accent-dim);animation:bounce 1.2s ease-in-out infinite;}
+    .t-dots span:nth-child(2){animation-delay:.2s}.t-dots span:nth-child(3){animation-delay:.4s}
+    @keyframes bounce{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-4px);opacity:1}}
+    .chat-bottom{padding:.75rem 1.25rem 1.25rem;border-top:1px solid var(--border);background:rgba(9,9,15,.9);backdrop-filter:blur(20px);flex-shrink:0;}
+    .input-row{display:flex;gap:8px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:.5rem .5rem .5rem 1rem;}
+    .input-row:focus-within{border-color:rgba(167,139,250,.35);}
+    #chat-in{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.875rem;font-weight:300;line-height:1.5;padding:.2rem 0;}
+    #chat-in::placeholder{color:var(--text-dim);}
+    .btn-send{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#a78bfa);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .btn-send:disabled{opacity:.4;cursor:not-allowed;}
+    .btn-send svg{width:14px;height:14px;fill:#fff;}
+    .hint{font-size:.68rem;color:var(--text-dim);text-align:center;margin-top:.5rem;}
   </style>
 </head>
 <body>
 <div class="bg-orb"></div>
 <div class="bg-stars" id="stars"></div>
 
-<!-- INTRO -->
-<div id="screen-intro" class="screen active">
-  <span class="intro-badge">✦ tu ancla emocional</span>
-  <h1 class="intro-title">Don't<br><em>Text.</em></h1>
-  <p class="intro-sub">Estás a punto de escribirle. Respirá. Estoy acá para ayudarte a no hacerlo.</p>
-  <button class="btn-main" onclick="goTo('onboarding')">
-    <span>💬</span> Necesito ayuda ahora
-  </button>
-  <p class="intro-footer">Sin registro · Confidencial · Siempre disponible</p>
+<div id="s-intro" class="screen active">
+  <span class="badge">✦ tu ancla emocional</span>
+  <h1 class="title">Don't<br><em>Text.</em></h1>
+  <p class="subtitle">Estás a punto de escribirle. Respirá. Estoy acá para ayudarte a no hacerlo.</p>
+  <button class="btn-main" id="btn-start">💬 Necesito ayuda ahora</button>
+  <p class="intro-note">Sin registro · Confidencial · Siempre disponible</p>
 </div>
 
-<!-- ONBOARDING -->
-<div id="screen-onboarding" class="screen">
+<div id="s-ob" class="screen">
   <div class="ob-wrap">
     <div class="ob-progress">
-      <div class="ob-dot" id="ob-p0"></div>
-      <div class="ob-dot" id="ob-p1"></div>
-      <div class="ob-dot" id="ob-p2"></div>
+      <div class="ob-dot" id="p0"></div>
+      <div class="ob-dot" id="p1"></div>
+      <div class="ob-dot" id="p2"></div>
     </div>
-    <div id="ob-content"></div>
+    <div id="ob-body"></div>
   </div>
 </div>
 
-<!-- CHAT -->
-<div id="screen-chat" class="screen">
-  <div class="chat-header">
-    <div class="chat-header-left">
-      <div class="ch-avatar">✦</div>
+<div id="s-chat" class="screen">
+  <div class="chat-head">
+    <div class="ch-left">
+      <div class="ch-av">✦</div>
       <div>
         <div class="ch-name">Don't Text</div>
         <div class="ch-status"><span class="ch-dot"></span>acá para vos</div>
       </div>
     </div>
-    <button class="btn-back" onclick="goTo('intro')">← volver</button>
+    <button class="btn-back" id="btn-back">← volver</button>
   </div>
-  <div class="chat-msgs" id="chat-msgs"></div>
-  <div class="chat-input-area">
-    <div class="input-wrap">
-      <textarea id="chat-input" rows="1" placeholder="Contame qué está pasando..."></textarea>
-      <button class="btn-send" id="send-btn" onclick="sendMessage()">
+  <div class="chat-msgs" id="msgs"></div>
+  <div class="chat-bottom">
+    <div class="input-row">
+      <input type="text" id="chat-in" placeholder="Contame qué está pasando..." autocomplete="off" />
+      <button class="btn-send" id="btn-send">
         <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
       </button>
     </div>
-    <p class="input-hint">Enter para enviar · Shift+Enter para nueva línea</p>
+    <p class="hint">Presioná Enter para enviar</p>
   </div>
 </div>
 
 <script>
-// ── Stars ──
-const starsEl = document.getElementById('stars');
-for (let i = 0; i < 80; i++) {
-  const s = document.createElement('div');
-  s.className = 'star';
-  const sz = Math.random() * 2.5 + 0.5;
-  s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${Math.random()*4+2}s;--delay:${Math.random()*5}s;--op:${Math.random()*0.5+0.2}`;
-  starsEl.appendChild(s);
-}
+// Stars
+const starsEl=document.getElementById('stars');
+for(let i=0;i<80;i++){const s=document.createElement('div');s.className='star';const sz=Math.random()*2.5+.5;s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--d:${Math.random()*4+2}s;--delay:${Math.random()*5}s;--op:${Math.random()*.5+.2}`;starsEl.appendChild(s);}
 
-// ── State ──
-let userName = '', timeSince = '', situation = '';
-let currentQ = 0, answers = {}, busy = false, msgCount = 0;
+let name='',time='',sit='',busy=false,msgCount=0,qIdx=0,answers={};
+let usedGeneral=[];
 
-// ── Navigation ──
-function goTo(screen) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-' + screen).classList.add('active');
-  if (screen === 'intro') { document.getElementById('chat-msgs').innerHTML = ''; msgCount = 0; }
-}
-
-// ── Onboarding ──
-const questions = [
-  { id: 'name', label: 'Primero lo primero', q: '¿Cómo te llamás?', sub: 'Solo tu nombre, para poder hablarte de cerca.', type: 'input', placeholder: 'Tu nombre...' },
-  { id: 'time', label: 'Contame un poco', q: '¿Cuánto tiempo pasó desde la ruptura?', sub: 'No hay respuesta correcta. Solo quiero entenderte mejor.', type: 'options', options: ['Menos de una semana', 'Unas semanas', 'Uno o dos meses', 'Más de dos meses'] },
-  { id: 'situation', label: 'Ahora mismo', q: '¿Qué está pasando en este momento?', sub: 'Elegí lo que más se acerque a lo que sentís ahora.', type: 'options', options: ['Estoy a punto de escribirle', 'No puedo dejar de pensar en él/ella', 'Siento que no puedo más', 'Necesito hablar con alguien'] }
+const qs=[
+  {id:'name',label:'Primero lo primero',q:'¿Cómo te llamás?',sub:'Solo tu nombre, para poder hablarte de cerca.',type:'input',ph:'Tu nombre...'},
+  {id:'time',label:'Contame un poco',q:'¿Cuánto tiempo pasó desde la ruptura?',sub:'No hay respuesta correcta. Solo quiero entenderte mejor.',type:'opts',opts:['Menos de una semana','Unas semanas','Uno o dos meses','Más de dos meses']},
+  {id:'sit',label:'Ahora mismo',q:'¿Qué está pasando en este momento?',sub:'Elegí lo que más se acerque a lo que sentís ahora.',type:'opts',opts:['Estoy a punto de escribirle','No puedo dejar de pensar en él/ella','Siento que no puedo más','Necesito hablar con alguien']}
 ];
 
-function renderQ() {
-  const q = questions[currentQ];
-  [0,1,2].forEach(i => document.getElementById('ob-p'+i).classList.toggle('done', i <= currentQ));
-  let html = `<div class="ob-label">${q.label}</div><div class="ob-question">${q.q}</div><div class="ob-sub">${q.sub}</div>`;
-  if (q.type === 'input') {
-    html += `<input class="ob-input" id="ob-input" type="text" placeholder="${q.placeholder}" maxlength="30" /><br><button class="btn-next" id="ob-next" onclick="nextQ()" disabled>Continuar →</button>`;
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+
+function renderQ(){
+  const q=qs[qIdx];
+  [0,1,2].forEach(i=>document.getElementById('p'+i).classList.toggle('done',i<=qIdx));
+  const b=document.getElementById('ob-body');
+  if(q.type==='input'){
+    b.innerHTML=`<div class="ob-label">${q.label}</div><div class="ob-q">${q.q}</div><div class="ob-sub">${q.sub}</div><input class="ob-text-input" id="ob-in" type="text" placeholder="${q.ph}" maxlength="30"/><br><button class="btn-next" id="ob-next" disabled>Continuar →</button>`;
+    const inp=document.getElementById('ob-in');
+    const btn=document.getElementById('ob-next');
+    inp.addEventListener('input',()=>{btn.disabled=inp.value.trim().length<2;});
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&inp.value.trim().length>=2)nextQ();});
+    btn.addEventListener('click',nextQ);
+    setTimeout(()=>inp.focus(),100);
   } else {
-    html += `<div class="ob-options">` + q.options.map((o,i) => `<button class="ob-option" onclick="selectOpt(${i},'${o.replace(/'/g,"\\'")}')">` + o + `</button>`).join('') + `</div>`;
-  }
-  document.getElementById('ob-content').innerHTML = html;
-  if (q.type === 'input') {
-    const inp = document.getElementById('ob-input');
-    inp.addEventListener('input', () => { document.getElementById('ob-next').disabled = inp.value.trim().length < 2; });
-    inp.addEventListener('keydown', e => { if (e.key === 'Enter' && inp.value.trim().length >= 2) nextQ(); });
-    setTimeout(() => inp.focus(), 50);
+    b.innerHTML=`<div class="ob-label">${q.label}</div><div class="ob-q">${q.q}</div><div class="ob-sub">${q.sub}</div><div class="ob-options">${q.opts.map((o,i)=>`<button class="ob-opt" data-v="${o}">${o}</button>`).join('')}</div>`;
+    b.querySelectorAll('.ob-opt').forEach(btn=>btn.addEventListener('click',function(){
+      answers[q.id]=this.dataset.v;
+      b.querySelectorAll('.ob-opt').forEach(x=>x.classList.remove('sel'));
+      this.classList.add('sel');
+      setTimeout(nextQ,280);
+    }));
   }
 }
 
-function selectOpt(i, val) {
-  document.querySelectorAll('.ob-option').forEach(b => b.classList.remove('selected'));
-  document.querySelectorAll('.ob-option')[i].classList.add('selected');
-  answers[questions[currentQ].id] = val;
-  setTimeout(nextQ, 280);
+function nextQ(){
+  const q=qs[qIdx];
+  if(q.type==='input'){const v=document.getElementById('ob-in').value.trim();if(v.length<2)return;answers[q.id]=v;}
+  if(!answers[q.id])return;
+  qIdx++;
+  if(qIdx>=qs.length){name=answers.name;time=answers.time;sit=answers.sit;startChat();}
+  else renderQ();
 }
 
-function nextQ() {
-  const q = questions[currentQ];
-  if (q.type === 'input') {
-    const v = document.getElementById('ob-input').value.trim();
-    if (v.length < 2) return;
-    answers[q.id] = v;
-  }
-  if (!answers[q.id]) return;
-  currentQ++;
-  if (currentQ >= questions.length) {
-    userName = answers.name;
-    timeSince = answers.time;
-    situation = answers.situation;
-    startChat();
-  } else renderQ();
-}
-
-// ── Chat start ──
-function startChat() {
-  goTo('chat');
-  document.getElementById('chat-msgs').innerHTML = '';
-  msgCount = 0;
-  const greetings = {
-    'Menos de una semana': `${userName}, es muy reciente. El dolor está en su punto más crudo ahora mismo, y tiene todo el sentido que estés así.`,
-    'Unas semanas': `${userName}, ya pasaron unas semanas. Aunque parezca que debería estar mejorando, el duelo no tiene horarios.`,
-    'Uno o dos meses': `${userName}, ya pasó un tiempo, pero estas cosas no se resuelven en línea recta. Que estés acá hoy no significa que retrocediste.`,
-    'Más de dos meses': `${userName}, llevas un buen tiempo cargando con esto. Y que todavía duela no significa que hiciste algo mal.`
+function startChat(){
+  show('s-chat');
+  document.getElementById('msgs').innerHTML='';
+  msgCount=0;usedGeneral=[];
+  const greets={
+    'Menos de una semana':`Hola, ${name}. Es muy reciente todo esto.\n\nEl dolor está en su momento más crudo y tiene todo el sentido que estés así. No hay nada mal en vos.\n\nContame, ¿qué está pasando ahora mismo?`,
+    'Unas semanas':`Hola, ${name}. Que sigas sintiéndote así no significa que algo salió mal.\n\nEl duelo no tiene calendario. Hay días peores que otros, y que estés acá hoy habla bien de vos.\n\n¿Qué está pasando en este momento?`,
+    'Uno o dos meses':`Hola, ${name}. Ya pasó un tiempo, pero esto no se resuelve en línea recta.\n\nQue estés acá hoy no significa que retrocediste. Significa que seguís eligiendo cuidarte.\n\nContame qué está pasando.`,
+    'Más de dos meses':`Hola, ${name}. Llevas un buen tiempo cargando con esto.\n\nY que todavía duela no es una señal de debilidad — es una señal de que lo que viviste fue real e importante.\n\n¿Qué está pasando hoy?`
   };
-  const sitLines = {
-    'Estoy a punto de escribirle': 'Que hayas entrado acá antes de hacerlo ya dice mucho de vos.',
-    'No puedo dejar de pensar en él/ella': 'Esa presencia constante en tu cabeza tiene sentido. Es parte del proceso.',
-    'Siento que no puedo más': 'Escucharte decir eso me importa. Estoy acá, no te apures.',
-    'Necesito hablar con alguien': 'Bien que hayas venido. Contame todo lo que necesités.'
-  };
-  const g = greetings[timeSince] || `Hola, ${userName}. Estoy acá.`;
-  const s = sitLines[situation] || 'Contame qué está pasando.';
-  setTimeout(() => addMsg('ai', `${g}\n\n${s}\n\n¿Qué está pasando ahora mismo?`), 500);
+  const g=greets[time]||`Hola, ${name}. Estoy acá.\n\nContame qué está pasando.`;
+  setTimeout(()=>addMsg('ai',g),500);
+  setTimeout(()=>document.getElementById('chat-in').focus(),600);
 }
 
-// ── AI Responses (Rolón framework) ──
-function getResponse(text) {
-  const t = text.toLowerCase();
-  const n = userName;
+function addMsg(role,text){
+  const msgs=document.getElementById('msgs');
+  const d=document.createElement('div');d.className='msg '+role;
+  const av=document.createElement('div');av.className='msg-av';av.textContent=role==='ai'?'✦':(name?name[0].toUpperCase():'?');
+  const b=document.createElement('div');b.className='msg-bubble';b.textContent=text;
+  d.appendChild(av);d.appendChild(b);msgs.appendChild(d);
+  msgs.scrollTop=msgs.scrollHeight;
+}
 
-  // Querer escribir / llamar
-  if (/escribi|llam|manda|texto|whatsapp|mensaje/i.test(t)) {
-    return [
-      `${n}, ese impulso que sentís ahora no es amor. Es ansiedad.\n\nLo que extrañás no es solo a él/ella — es ese espacio único que construyeron juntos, ese territorio que existía entre los dos y que ya no está. Tu mente lo busca porque todavía duele.\n\nPero escribirle desde este lugar no va a devolverte ese espacio. Solo te va a dejar más expuesto.\n\nAntes de hacerlo, probá esto: inhalá contando hasta 4... retené el aire 7 segundos... y exhalá muy despacio en 8. Dos veces. El impulso baja. ¿Podés intentarlo?`,
-      `${n}, entiendo. Ese deseo de contacto es completamente humano.\n\nHay algo importante que quiero que sepas: solo duele lo que realmente importó. Lo que sentís ahora es la prueba de que ese amor fue real. No lo minimices.\n\nPero enviar ese mensaje ahora, desde este dolor, no te va a dar lo que necesitás. Probablemente te deje más vulnerable después.\n\nCada vez que resistís este impulso, le devolvés poder a vos mismo. ¿Me contás qué fue lo que detonó las ganas de escribirle hoy?`
-    ][msgCount % 2];
+function showTyping(){
+  const msgs=document.getElementById('msgs');
+  const d=document.createElement('div');d.className='typing';d.id='typing';
+  d.innerHTML='<div class="t-av">✦</div><div class="t-dots"><span></span><span></span><span></span></div>';
+  msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;
+}
+function hideTyping(){const e=document.getElementById('typing');if(e)e.remove();}
+
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)];}
+
+function pickUnused(arr,usedRef){
+  const available=arr.filter((_,i)=>!usedRef.includes(i));
+  if(available.length===0){usedRef.length=0;}
+  const pool=arr.filter((_,i)=>!usedRef.includes(i));
+  const idx=arr.indexOf(pick(pool));
+  usedRef.push(idx);
+  return arr[idx];
+}
+
+function getReply(t){
+  const tl=t.toLowerCase();
+
+  // Querer escribir / llamar / contactar
+  if(/escribi|llam|mand[ao]|whatsapp|mensaje|contac|texto/i.test(tl)){
+    return pick([
+      `Ese impulso que sentís ahora no es amor. Es ansiedad.\n\nLo que extrañás no es solo a él/ella — es ese espacio único que construyeron juntos, ese territorio que existía entre los dos y que ya no está. Tu mente lo busca porque todavía duele.\n\nPero escribirle desde este lugar no te va a devolver ese espacio. Solo te va a dejar más expuesto después.\n\nAntes de hacerlo, probá esto: inhalá contando hasta 4... retené 7 segundos... exhalá muy despacio en 8. Dos veces. ¿Podés intentarlo?`,
+      `Entiendo ese deseo. Es completamente humano querer recuperar algo que fue importante.\n\nPero hay algo clave: ese mensaje que querés mandar nace del dolor, no de la claridad. Y las decisiones que tomamos desde el dolor casi nunca nos llevan donde queremos ir.\n\nCada vez que resistís este impulso, le devolvés algo a vos mismo. Es fuerza, no silencio.\n\n¿Qué fue lo que detonó las ganas hoy?`,
+      `Querer escribirle tiene sentido. Lo que no tiene sentido es hacerlo desde este estado.\n\nNo porque no tengas derecho — sino porque no te va a dar lo que necesitás. El dolor que sentís ahora busca alivio inmediato, pero ese alivio dura minutos. El costo emocional dura días.\n\nProbá la respiración 4-7-8: inhalá 4, retené 7, exhalá 8. Hacelo dos veces antes de decidir cualquier cosa.`
+    ]);
   }
 
-  // No poder más / agotamiento
-  if (/no puedo|no aguant|cansad|agotad|harto|hart[ao]/i.test(t)) {
-    return `${n}, decir "no puedo más" toma coraje. Escucharte así me importa.\n\nEso que sentís tiene nombre: es el peso de cargar con una pérdida que todavía no terminó de procesarse. Y es agotador. Tiene todo el sentido que estés así.\n\nAhora mismo, ¿podés hacer algo por mí? Nombrá en voz baja 5 cosas que ves a tu alrededor, 4 que podés tocar, 3 sonidos que escuchás. Es un ejercicio simple que baja la intensidad del momento.\n\nEstoy acá. No te apures.`;
+  // Agotamiento / no poder más
+  if(/no puedo|no aguant|cansad|agotad|harto|hart[ao]|no doy más|no da más/i.test(tl)){
+    return pick([
+      `Decir "no puedo más" toma coraje. Que lo estés diciendo acá, en vez de mandarlo en un mensaje, importa.\n\nEso que sentís tiene nombre: es el peso de una pérdida que todavía no terminó de procesarse. Es agotador. Tiene todo el sentido.\n\nProbá algo ahora: nombrá en voz baja 5 cosas que ves a tu alrededor. Después 4 que podés tocar. Es un ancla. Bajemos la intensidad de este momento juntos.`,
+      `Ese agotamiento es real. No es exageración.\n\nCuando el duelo se instala así, todo requiere más energía de la normal. Levantarse, no pensar, no revisar el teléfono. Es un trabajo enorme que nadie ve.\n\nAhora mismo no tenés que hacer nada grande. Solo respirar. Inhalá 4 segundos, retené 7, exhalá 8. Una vez. ¿Cómo estás?`
+    ]);
   }
 
   // Extrañar
-  if (/extrañ|echo de menos|recuerd|pienso en|no lo|no la/i.test(t)) {
-    return `${n}, extrañar es una de las formas más honestas de haber amado.\n\nLo que perdiste no fue solo una persona. Fue un mundo compartido, una forma de verte reflejado en alguien. Ese dolor es proporcional a lo que fue real.\n\nEl duelo no es olvidar. Es aprender a vivir con la marca que dejó ese amor. Y eso lleva tiempo — más del que queremos.\n\nProbá la respiración 4-7-8: inhalá 4 segundos, retené 7, exhalá 8. Hacelo dos veces. ¿Cómo estás después?`;
+  if(/extrañ|echo de menos|recuerd|no puedo dejar de pensar|lo pienso|la pienso/i.test(tl)){
+    return pick([
+      `Extrañar es una de las formas más honestas de haber amado.\n\nLo que perdiste no fue solo una persona. Fue un mundo compartido, una forma de verte reflejado en alguien que te conocía. Ese vacío es proporcional a lo que fue real.\n\nEl duelo no es olvidar. Es aprender a vivir con la marca que dejó ese amor. Y eso lleva tiempo — más del que quisiéramos.\n\n¿Hay algo puntual que disparó esto hoy?`,
+      `Tiene sentido que siga apareciendo. La mente no tiene un interruptor.\n\nLo que llamamos "pensar en alguien" después de una ruptura muchas veces no es extrañar a la persona real — es extrañar cómo te sentías cuando estabas con ella. Esa diferencia importa.\n\nProbá la respiración 4-7-8 para bajar un poco la intensidad: inhalá 4, retené 7, exhalá 8. ¿Qué está pasando concretamente?`
+    ]);
   }
 
   // Enojo / rabia
-  if (/enoj|bronc|rabia|odio|furioso|me hizo|me trató/i.test(t)) {
-    return `${n}, la rabia también es parte del duelo. Y tiene sentido.\n\nA veces el enojo es más fácil de sostener que la tristeza — porque en la tristeza estás vulnerable, y en la rabia sentís que tenés algo de control.\n\nPero mandarle un mensaje desde ese lugar casi siempre termina mal. No porque no tengas razón en lo que sentís — sino porque no te va a dar el cierre que necesitás.\n\nContame más. ¿Qué fue lo que pasó?`;
+  if(/enoj|bronc|rabia|odio|furioso|me hiz|me trató|me falt|me minti/i.test(tl)){
+    return pick([
+      `La rabia también es parte del duelo. Y tiene todo el sentido.\n\nA veces el enojo es más fácil de sostener que la tristeza — porque en la tristeza estás vulnerable, y en la rabia sentís que tenés algo de control. Los dos son válidos.\n\nPero mandarle algo desde este estado casi siempre termina mal — no porque no tengas razón, sino porque no te va a dar el cierre que necesitás.\n\n¿Qué fue lo que pasó?`,
+      `Esa bronca que sentís es información, no un problema.\n\nTe dice que algo fue injusto, que algo dolió, que algo no estuvo bien. Todo eso puede ser verdad.\n\nLo que no conviene es actuar desde ahí ahora mismo. Las palabras que mandamos desde la rabia no suelen decir lo que realmente queremos decir. ¿Querés contarme qué pasó?`
+    ]);
   }
 
   // Esperanza de volver
-  if (/volver|quiere|quizás|tal vez|se arrepient|me llam/i.test(t)) {
-    return `${n}, esa esperanza de que vuelva es una de las partes más difíciles del duelo.\n\nHay algo que Rolón llama "el fantasma del amado" — esa presencia que sigue ahí aunque ya no esté. Tu mente construye escenarios, busca señales. Es completamente normal.\n\nPero tomar decisiones desde esa esperanza, en este momento de dolor, casi nunca sale bien. No porque no pueda pasar — sino porque ahora mismo no estás en condiciones de evaluar si sería bueno para vos.\n\n¿Qué te hace pensar que hay una chance de que vuelva?`;
+  if(/volver|quiere|quizás|tal vez|se arrepient|me llam|capaz vuelve|puede que/i.test(tl)){
+    return pick([
+      `Esa esperanza es una de las partes más difíciles del duelo. Y es muy humana.\n\nLa mente construye escenarios, busca señales, reinterpreta mensajes. Es lo que hace cuando no quiere soltar algo que fue importante.\n\nPero tomar decisiones desde esa esperanza, en este momento de dolor, casi nunca lleva adonde queremos. ¿Qué te hace sentir que hay una posibilidad?`,
+      `Querer que vuelva no significa que sea lo mejor para vos. Y saberlo no hace que el deseo desaparezca — eso es lo más difícil.\n\nAntes de hacer algo desde ese lugar, vale la pena preguntarse: ¿estás extrañando a la persona real, o a la versión de vos mismo que existía en esa relación?\n\nNo hay respuesta incorrecta. Solo quiero que lo pienses antes de actuar.`
+    ]);
   }
 
-  // Mejor / mejoría
-  if (/mejor|bien|calm|grac|ayud/i.test(t)) {
-    const closings = [
-      `Me alegra mucho escuchar eso, ${n}.\n\nEse "mejor" que sentís ahora sos vos. No fue él/ella. Fuiste vos eligiendo no mandar ese mensaje, respirando, dándote un minuto.\n\nGuardá esa sensación. La próxima vez que el impulso aparezca, ya sabés que pasa. Ya lo viviste.\n\n¿Hay algo más que quieras contarme?`,
-      `${n}, que estés bien importa.\n\nEl duelo no es una línea recta — tiene momentos así, de calma, y momentos de mucho dolor. Los dos son parte del proceso.\n\nCuando vuelva a aparecer ese impulso, acordate de volver acá. Estoy disponible cuando me necesités.`
-    ];
-    return closings[msgCount % 2];
+  // Mejoría / agradecimiento
+  if(/mejor|bien|calm|gracias|me ayud|sirvió|funcionó/i.test(tl)){
+    return pick([
+      `Me alegra escuchar eso.\n\nEse "mejor" vino de vos — de elegir no mandar ese mensaje, de respirar, de darte un minuto. No lo subestimes.\n\nGuardá esa sensación. La próxima vez que el impulso aparezca, ya sabés que pasa.`,
+      `Bien. Eso importa.\n\nEl duelo no es una línea recta — va a haber momentos de calma y momentos difíciles. Los dos son parte del proceso. Cuando vuelva a aparecer ese impulso, ya sabés que podés manejarlo.\n\n¿Hay algo más que quieras contarme?`,
+      `Eso es todo tuyo.\n\nNo fue magia ni distracción — elegiste pausar en el momento más difícil. Eso dice mucho de vos.`
+    ]);
   }
 
-  // Respuestas generales según el contexto del onboarding
-  const generalResponses = [
-    `${n}, gracias por contarme.\n\nLo que estás atravesando tiene nombre y tiene sentido. El duelo por una ruptura no es solo tristeza — es la pérdida de un mundo compartido que no era de uno solo ni del otro, sino de los dos juntos. Y eso duele de una forma muy particular.\n\nNo estás mal. Estás en proceso.\n\nProbá el ejercicio 5-4-3-2-1: nombrá 5 cosas que ves, 4 que podés tocar, 3 sonidos que escuchás, 2 olores, 1 sabor. Te ayuda a bajar la intensidad del momento. ¿Cómo te sentís ahora?`,
-    `${n}, te escucho.\n\nHay algo importante que quiero que sepas: el hecho de que todavía duela no significa que hiciste algo mal. Solo significa que amaste de verdad. Solo duele lo que importó.\n\nEl camino no es olvidar ni dejar de sentir. Es aprender a vivir con lo que ese amor dejó en vos.\n\nInhalá profundo: 4 segundos, retené 7, exhalá 8. Dos veces. Estoy acá.`,
-    `${n}, te acompaño.\n\nEse impulso que sentís — de buscar contacto, de querer saber, de extrañar — es la parte más humana del duelo. No hay que avergonzarse de eso.\n\nPero lo que necesitás ahora no lo puede dar él/ella. Tiene que venir de adentro tuyo, y estás dando el primer paso al estar acá.\n\n¿Querés contarme un poco más sobre qué está pasando?`
+  // Llanto / tristeza profunda
+  if(/llor|triste|tristeza|deprim|oscur|vacío|siento nada/i.test(tl)){
+    return pick([
+      `La tristeza no es el enemigo. Es la señal de que algo importó.\n\nLo que duele no es debilidad — es la prueba de que amaste de verdad. Y eso vale.\n\nNo tenés que hacer nada con eso ahora mismo. Solo estar acá, respirar. Estoy con vos.`,
+      `Ese vacío que describís es real. No es dramático ni exagerado.\n\nDespués de perder algo importante, hay un espacio que no sabe cómo llenarse todavía. Y la mente a veces interpreta ese espacio como un problema a resolver — por eso el impulso de escribirle.\n\nPero el vacío no se llena con un mensaje. Se va llenando de a poco, con tiempo y con otras cosas.\n\nProbá el ejercicio 5-4-3-2-1: 5 cosas que ves, 4 que tocás, 3 que escuchás, 2 que olés, 1 que saboreás. Anclate al presente por un momento.`
+    ]);
+  }
+
+  // Respuestas generales — pool amplio y variado, sin nombre al inicio
+  const generalPool = [
+    `Lo que describís tiene todo el sentido dentro de un proceso de duelo.\n\nPerder una relación no es solo perder a una persona — es perder un mundo compartido, rutinas, proyectos, una forma de verse. Ese dolor es real y proporcional.\n\nProbá algo ahora: 5 cosas que ves, 4 que tocás, 3 que escuchás. Anclate al presente un momento. ¿Qué está pasando concretamente?`,
+    `Escucho.\n\nA veces el dolor de una ruptura no viene en línea recta. Aparece de golpe, en momentos inesperados, y se siente como retroceder. Pero no es así.\n\nCada momento que elegís no actuar desde el dolor es un paso adelante, aunque no se sienta de esa manera.\n\n¿Querés contarme un poco más sobre lo que está pasando?`,
+    `Tiene sentido que estés así.\n\nEl duelo tiene su propio ritmo y no le importa lo que nosotros queramos. Lo único que podés hacer es atravesarlo — no hay atajo.\n\nPero sí podés elegir cómo atravesarlo. Y estar acá, hablando, en vez de mandar ese mensaje, ya es una buena elección.\n\n¿Qué fue lo que detonó esto hoy?`,
+    `Lo que sentís ahora es intenso, pero va a bajar.\n\nLos momentos de mayor ansiedad emocional duran entre 10 y 20 minutos si no los alimentamos. Cada mensaje que no mandamos, cada llamada que no hacemos, le da espacio al sistema nervioso para regularse.\n\nProbá la respiración 4-7-8: inhalá 4 segundos, retené 7, exhalá 8. Hacelo dos veces. ¿Cómo te sentís después?`,
+    `No estás mal. Estás en proceso.\n\nHay una diferencia enorme entre estar roto y estar en duelo. Lo primero es permanente. Lo segundo no.\n\nContame qué está pasando ahora mismo. Sin filtros.`
   ];
 
-  return generalResponses[msgCount % generalResponses.length];
+  return pickUnused(generalPool, usedGeneral);
 }
 
-// ── Chat mechanics ──
-function addMsg(role, text) {
-  const msgs = document.getElementById('chat-msgs');
-  const div = document.createElement('div');
-  div.className = 'msg ' + role;
-  const av = document.createElement('div');
-  av.className = 'msg-av';
-  av.textContent = role === 'ai' ? '✦' : (userName ? userName[0].toUpperCase() : '?');
-  const bubble = document.createElement('div');
-  bubble.className = 'msg-bubble';
-  bubble.style.whiteSpace = 'pre-wrap';
-  bubble.textContent = text;
-  div.appendChild(av);
-  div.appendChild(bubble);
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-function showTyping() {
-  const msgs = document.getElementById('chat-msgs');
-  const div = document.createElement('div');
-  div.className = 'typing';
-  div.id = 'typing-el';
-  const av = document.createElement('div');
-  av.className = 'msg-av';
-  av.style.cssText = 'background:linear-gradient(135deg,#4c1d95,#7c3aed);box-shadow:0 0 10px rgba(124,58,237,0.3);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8rem;flex-shrink:0;';
-  av.textContent = '✦';
-  const dots = document.createElement('div');
-  dots.className = 'typing-dots';
-  dots.innerHTML = '<span></span><span></span><span></span>';
-  div.appendChild(av);
-  div.appendChild(dots);
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-function hideTyping() {
-  const el = document.getElementById('typing-el');
-  if (el) el.remove();
-}
-
-function sendMessage() {
-  if (busy) return;
-  const input = document.getElementById('chat-input');
-  const text = input.value.trim();
-  if (!text) return;
-  input.value = '';
-  input.style.height = 'auto';
-  addMsg('user', text);
-  busy = true;
-  document.getElementById('send-btn').disabled = true;
+function send(){
+  if(busy)return;
+  const inp=document.getElementById('chat-in');
+  const text=inp.value.trim();
+  if(!text)return;
+  inp.value='';
+  addMsg('user',text);
+  busy=true;
+  document.getElementById('btn-send').disabled=true;
   showTyping();
-  const delay = 1400 + Math.random() * 800;
-  setTimeout(() => {
+  setTimeout(()=>{
     hideTyping();
-    const reply = getResponse(text);
-    addMsg('ai', reply);
+    addMsg('ai',getReply(text));
     msgCount++;
-    busy = false;
-    document.getElementById('send-btn').disabled = false;
-  }, delay);
+    busy=false;
+    document.getElementById('btn-send').disabled=false;
+    inp.focus();
+  },1400+Math.random()*800);
 }
 
-const textarea = document.getElementById('chat-input');
-textarea.addEventListener('input', function() {
-  this.style.height = 'auto';
-  this.style.height = Math.min(this.scrollHeight, 110) + 'px';
-});
-textarea.addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-});
-
-// Init onboarding
-document.addEventListener('DOMContentLoaded', () => {
-  currentQ = 0; answers = {};
-  document.getElementById('ob-content') && renderQ();
-});
-document.getElementById('screen-onboarding').addEventListener('transitionend', () => {
-  if (document.getElementById('screen-onboarding').classList.contains('active')) {
-    currentQ = 0; answers = {}; renderQ();
-  }
-});
-
-// Patch goTo to init onboarding
-const _goTo = goTo;
-window.goTo = function(screen) {
-  _goTo(screen);
-  if (screen === 'onboarding') { currentQ = 0; answers = {}; renderQ(); }
-};
+document.getElementById('btn-start').addEventListener('click',()=>{qIdx=0;answers={};show('s-ob');renderQ();});
+document.getElementById('btn-back').addEventListener('click',()=>show('s-intro'));
+document.getElementById('btn-send').addEventListener('click',send);
+document.getElementById('chat-in').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();send();}});
 </script>
 </body>
 </html>
